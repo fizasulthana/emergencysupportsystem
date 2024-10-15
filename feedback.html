@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(45deg, #f06, #ff79);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        .stars {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .star {
+            font-size: 2rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .star.selected {
+            color: #f39c12; /* Yellow color */
+        }
+        .feedback {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        .send-button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #3498db; /* Blue color */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .send-button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rate Your Experience</h1>
+    <div class="stars">
+        <span class="star" data-value="1">&#9733;</span>
+        <span class="star" data-value="2">&#9733;</span>
+        <span class="star" data-value="3">&#9733;</span>
+        <span class="star" data-value="4">&#9733;</span>
+        <span class="star" data-value="5">&#9733;</span>
+    </div>
+    <div class="feedback" id="feedback">Select a rating</div>
+    <button class="send-button" id="sendButton" disabled>Send Feedback</button>
+
+    <script>
+        const stars = document.querySelectorAll('.star');
+        const feedback = document.getElementById('feedback');
+        const sendButton = document.getElementById('sendButton');
+        let selectedValue = null;
+
+        const feedbackTexts = {
+            1: 'Poor',
+            2: 'Bad',
+            3: 'Average',
+            4: 'Good',
+            5: 'Excellent'
+        };
+
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                const value = parseInt(star.getAttribute('data-value'));
+
+                // Update selected star state
+                stars.forEach(st => {
+                    st.classList.remove('selected');
+                    if (parseInt(st.getAttribute('data-value')) <= value) {
+                        st.classList.add('selected');
+                    }
+                });
+
+                // Update feedback text
+                feedback.textContent = feedbackTexts[value];
+
+                // Enable the send button
+                sendButton.disabled = false;
+                selectedValue = value;
+            });
+        });
+
+        sendButton.addEventListener('click', () => {
+            if (selectedValue !== null) {
+                alert(`Feedback sent: ${feedbackTexts[selectedValue]}`);
+            }
+        });
+    </script>
+</body>
+</html>
